@@ -6,52 +6,45 @@
 #include <iostream>
 #include <memory>
 
-#include "glad/glad.h"
+#include "rendering/rendering_device.h"
 
-[[nodiscard]] int run_game(int argc, char** argv) noexcept;
+[[nodiscard]] int run_game(SDL_Window *window, RenderingDevice const &rendering_device) noexcept;
 
-int main(int argc, char **argv) noexcept {
-  if(!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
+int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv) noexcept {
+  if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
+    return EXIT_FAILURE;
+  }
+  std::atexit(SDL_Quit);
+
+  std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window(
+      SDL_CreateWindow("Fumo Pong", 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE),
+      SDL_DestroyWindow);
+
+  if (!window) {
     return EXIT_FAILURE;
   }
 
-  auto const app_status = run_game(argc, argv);
+  auto const rendering_device = RenderingDevice::create(window.get());
+  if (!rendering_device) {
+    return EXIT_FAILURE;
+  }
 
-  SDL_Quit();
-  return app_status;
+  return run_game(window.get(), rendering_device.value());
 }
 
-[[nodiscard]] int run_game(int argc, char** argv) noexcept {
-  std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window(
-    SDL_CreateWindow("Fumo Pong", 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE)
-    , SDL_DestroyWindow);
-
-  if(!window) {
-    return EXIT_FAILURE;
-  }
-
-  std::unique_ptr<SDL_GLContextState, decltype(&SDL_GL_DestroyContext)> gl_context(
-    SDL_GL_CreateContext(window.get()),
-    SDL_GL_DestroyContext
-  );
-  if(!gl_context) {
-    return EXIT_FAILURE;
-  }
-
-  if(gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress)) == 0) {
-    return EXIT_FAILURE;
-  }
+[[nodiscard]] int run_game(SDL_Window *window, RenderingDevice const &rendering_device) noexcept {
+  rendering_device.set_clear_color(0.5f, 0.f, 0.35f, 0.23f);
 
   SDL_Event event{};
   bool running{true};
-  while(running) {
-    while(SDL_PollEvent(&event)) {
-      if(event.type == SDL_EVENT_QUIT) running = false;
+  while (running) {
+    while (SDL_PollEvent(&event)) {
+      if (event.type == SDL_EVENT_QUIT)
+        running = false;
     }
 
-    glClearColor(0.0, 0.0, 1.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    SDL_GL_SwapWindow(window.get());
+    rendering_device.clear();
+    SDL_GL_SwapWindow(window);
   }
 
   return EXIT_SUCCESS;
