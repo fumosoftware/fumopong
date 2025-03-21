@@ -4,11 +4,10 @@
 
 #include <SDL3/SDL.h>
 #include <iostream>
-#include <memory>
 
-#include "rendering/rendering_device.h"
+#include "rendering/drivers/window_interface.h"
+#include "rendering/rendering_context.h"
 
-[[nodiscard]] int run_game(SDL_Window *window, RenderingDevice const &rendering_device) noexcept;
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv) noexcept {
   if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
@@ -16,36 +15,23 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv) noexcept {
   }
   std::atexit(SDL_Quit);
 
-  std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window(
-      SDL_CreateWindow("Fumo Pong", 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE),
-      SDL_DestroyWindow);
-
-  if (!window) {
+  auto rendering_context_expected = create_rendering_context();
+  if(!rendering_context_expected) {
+    std::cerr << rendering_context_expected.error() << std::endl;
     return EXIT_FAILURE;
   }
 
-  auto const rendering_device = RenderingDevice::create(window.get());
-  if (!rendering_device) {
-    return EXIT_FAILURE;
-  }
-
-  return run_game(window.get(), rendering_device.value());
-}
-
-[[nodiscard]] int run_game(SDL_Window *window, RenderingDevice const &rendering_device) noexcept {
-  rendering_device.set_clear_color(0.5f, 0.f, 0.35f, 0.23f);
+  auto rendering_context = std::move(rendering_context_expected.value());
+  auto const window = rendering_context.get_main_window();
 
   SDL_Event event{};
-  bool running{true};
-  while (running) {
-    while (SDL_PollEvent(&event)) {
-      if (event.type == SDL_EVENT_QUIT)
-        running = false;
+  bool isRunning = true;
+  while(isRunning) {
+    while(SDL_PollEvent(&event)) {
+      if(event.type == SDL_EVENT_QUIT) isRunning = false;
     }
 
-    rendering_device.clear();
-    SDL_GL_SwapWindow(window);
+    window->clear();
+    window->present();
   }
-
-  return EXIT_SUCCESS;
 }
