@@ -37,4 +37,4 @@ namespace fumogfx::opengl {
     SDL_assert(m_window != nullptr);
     SDL_GL_SwapWindow(m_window.get());
   }
-} // fumogfx
+} // namespace fumogfx::opengl

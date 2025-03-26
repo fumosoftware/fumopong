@@ -4,12 +4,9 @@
 
 #include "rendering_device.h"
 
-#include "opengl/glad/glad.h"
-#include "opengl/rendering_device.h"
-
 #include <utility>
 
-#include <SDL3/SDL.h>
+#include "opengl/rendering_device.h"
 
 namespace fumogfx {
   std::unique_ptr<RenderingDevice> create_rendering_device() noexcept {
@@ -22,15 +19,12 @@ namespace fumogfx {
     return opengl::create_rendering_device();
   }
 
-  void RenderingDevice::clear() const noexcept {
-    clear_impl();
-  }
-  void RenderingDevice::present() const noexcept {
-    present_impl();
-  }
-
   RenderingDevice::RenderingDevice(
       std::unique_ptr<SDL_Window, void (*)(SDL_Window *)> &&window) noexcept :
-      m_window{std::exchange(window, nullptr)} {}
+      m_window{std::exchange(window, nullptr)} {
+    SDL_assert(m_window != nullptr);
+  }
 
+  void RenderingDevice::clear() const noexcept { clear_impl(); }
+  void RenderingDevice::present() const noexcept { present_impl(); }
 } // namespace fumogfx

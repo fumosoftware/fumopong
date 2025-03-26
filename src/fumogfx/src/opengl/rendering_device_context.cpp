@@ -2,17 +2,19 @@
 // Created by fumosoftware on 3/25/2025.
 //
 
-#include "rendering_context.h"
-#include "opengl/glad/glad.h"
+#include "rendering_device_context.h"
 #include <utility>
+#include "glad/glad.h"
 
-fumogfx::opengl::context::RenderingContext::RenderingContext(
+fumogfx::opengl::RenderingDeviceContext::RenderingDeviceContext(
     std::unique_ptr<SDL_GLContextState, bool (*)(SDL_GLContextState *)> &&gl) noexcept :
     m_gl{std::exchange(gl, nullptr)} {
-  glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+  SDL_assert(m_gl != nullptr);
+
+  glClearColor(0.f, 0.f, 1.f, 1.f);
 }
 
-void fumogfx::opengl::context::RenderingContext::clear() const noexcept {
+void fumogfx::opengl::RenderingDeviceContext::clear() const noexcept {
   SDL_assert(m_gl != nullptr);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -19,8 +19,9 @@ public:
 
     void clear() const noexcept;
     void present() const noexcept;
+
 protected:
-    std::unique_ptr<SDL_Window, void(*)(SDL_Window*)> m_window{nullptr, SDL_DestroyWindow};
+    std::unique_ptr<SDL_Window, void (*)(SDL_Window *)> m_window{nullptr, SDL_DestroyWindow};
 
     explicit RenderingDevice(std::unique_ptr<SDL_Window, void (*)(SDL_Window *)> &&window) noexcept;
     virtual void clear_impl() const noexcept = 0;

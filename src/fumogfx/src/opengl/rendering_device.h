@@ -5,9 +5,9 @@
 #ifndef OPENGL_RENDERING_DEVICE_H
 #define OPENGL_RENDERING_DEVICE_H
 
-#include <fumogfx/rendering_device.h>
+#include "rendering_device_context.h"
 
-#include "context/rendering_context.h"
+#include <fumogfx/rendering_device.h>
 
 namespace fumogfx::opengl {
 
@@ -22,8 +22,9 @@ public:
 
     void clear_impl() const noexcept override;
     void present_impl() const noexcept override;
+
 private:
-    context::RenderingContext m_context{
+    RenderingDeviceContext m_context{
         std::unique_ptr<SDL_GLContextState, bool (*)(SDL_GLContextState *)>{nullptr,
                                                                             SDL_GL_DestroyContext}};
   };

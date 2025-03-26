@@ -11,8 +11,8 @@ add_library(fumogfx
         src/opengl/glad/KHR/khrplatform.h
         src/opengl/rendering_device.h
         src/opengl/rendering_device.cpp
-        src/opengl/context/rendering_context.cpp
-        src/opengl/context/rendering_context.h
+        src/opengl/rendering_device_context.cpp
+        src/opengl/rendering_device_context.h
 )
 target_include_directories(fumogfx PUBLIC api)
 target_include_directories(fumogfx PRIVATE src)
