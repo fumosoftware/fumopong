@@ -25,6 +25,12 @@ namespace fumogfx {
     SDL_assert(m_window != nullptr);
   }
 
-  void RenderingDevice::clear() const noexcept { clear_impl(); }
-  void RenderingDevice::present() const noexcept { present_impl(); }
+  void RenderingDevice::clear() const noexcept {
+    SDL_assert(m_window != nullptr);
+    clear_impl();
+  }
+  void RenderingDevice::present() const noexcept {
+    SDL_assert(m_window != nullptr);
+    present_impl();
+  }
 } // namespace fumogfx
