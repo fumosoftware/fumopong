@@ -4,7 +4,12 @@ project(fumopong)
 set(CMAKE_CXX_STANDARD 23)
 
 
-add_executable(fumopong src/main.cpp)
+add_executable(fumopong src/main.cpp
+        src/drivers/graphics/opengl/context.cpp
+        src/drivers/graphics/opengl/context.h
+        src/drivers/graphics/opengl/glad.h
+        src/drivers/graphics/opengl/glad.c
+)
 
 include(cmake/CPM.cmake)
 CPMAddPackage("gh:fmtlib/fmt#11.2.0")
