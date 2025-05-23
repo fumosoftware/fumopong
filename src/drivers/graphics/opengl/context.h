@@ -32,7 +32,7 @@ public:
 
     [[nodiscard]] DriverInfo getDriverInfo() const noexcept;
 
-    [[nodiscard]] bool claimWindow(SDL_Window* window) noexcept;
+    [[nodiscard]] bool claimWindow(SDL_Window* window) const noexcept;
 private:
     GLContext m_glContext{nullptr, SDL_GL_DestroyContext};
 };

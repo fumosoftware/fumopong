@@ -9,6 +9,8 @@ add_executable(fumopong src/main.cpp
         src/drivers/graphics/opengl/context.h
         src/drivers/graphics/opengl/glad.h
         src/drivers/graphics/opengl/glad.c
+        src/display/window.cpp
+        src/display/window.h
 )
 
 include(cmake/CPM.cmake)

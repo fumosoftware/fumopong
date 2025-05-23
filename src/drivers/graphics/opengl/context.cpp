@@ -61,7 +61,7 @@ DriverInfo Context::getDriverInfo() const noexcept
     };
 }
 
-bool Context::claimWindow(SDL_Window* window) noexcept
+bool Context::claimWindow(SDL_Window* window) const noexcept
 {
     return SDL_GL_MakeCurrent(window, m_glContext.get());
 }

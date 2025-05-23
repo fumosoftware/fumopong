@@ -6,6 +6,7 @@
 #include <fmt/printf.h>
 #include <SDL3/SDL.h>
 
+#include "display/window.h"
 #include "drivers/graphics/opengl/context.h"
 
 int main(int argc, char** argv)
@@ -22,13 +23,15 @@ int main(int argc, char** argv)
         spdlog::error("Failed to create OpenGL context");
     }
 
-    SDL_Window* window = SDL_CreateWindow("Pong", 250, 250, SDL_WINDOW_OPENGL);
-    if(window && context.claimWindow(window))
+    auto window = display::Window(context);
+    auto const [_, version] = context.getDriverInfo();
+    fmt::print("Driver version: {}", version);
+
+    while(window.pollEvents())
     {
-        auto const [_, version] = context.getDriverInfo();
-        fmt::print("Driver version: {}", version);
+       window.display();
     }
-    SDL_DestroyWindow(window);
+
     SDL_Quit();
     return 0;
 }
