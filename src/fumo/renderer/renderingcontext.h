@@ -9,6 +9,7 @@
 #include <memory>
 
 namespace fumo {
+class Window;
 
 class RenderingContext {
 public:
@@ -21,10 +22,10 @@ public:
   RenderingContext &operator=(RenderingContext &&) noexcept;
 
   bool operator!() const { return m_glContext == nullptr; }
+  bool makeCurrent(Window const& window) const noexcept;
 private:
   using GLContext = std::unique_ptr<SDL_GLContextState, decltype(&SDL_GL_DestroyContext)>;
   GLContext m_glContext{nullptr, SDL_GL_DestroyContext};
-
 };
 
 } // fumo

@@ -6,7 +6,9 @@ set(CMAKE_CXX_STANDARD 23)
 
 add_executable(fumopong src/main.cpp
         src/fumo/renderer/RenderingContext.cpp
-        src/fumo/renderer/RenderingContext.h)
+        src/fumo/renderer/RenderingContext.h
+        src/fumo/display/window.cpp
+        src/fumo/display/window.h)
 
 include(cmake/CPM.cmake)
 CPMAddPackage("gh:fmtlib/fmt#11.2.0")
