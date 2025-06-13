@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.29.6)
-project(fumopong)
+project(fmp)
 
 include(cmake/CPM.cmake)
 CPMAddPackage("gh:fmtlib/fmt#11.2.0")
