@@ -2,7 +2,7 @@
 // Created by fumosoftware on 6/13/2025.
 //
 
-#include <fumo/rendering_engine.h>
+#include <libfumo/rendering_engine.h>
 
 #include <SDL3/SDL.h>
 

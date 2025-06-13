@@ -3,13 +3,13 @@ project(libfumo)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_library(libfumo fumo/rendering_engine.h fumo/rendering_engine.cpp)
+add_library(libfumo libfumo/rendering_engine.h libfumo/rendering_engine.cpp)
 target_include_directories(libfumo
         PUBLIC
         ${CMAKE_SOURCE_DIR}/libfumo
 )
 
-target_link_libraries(libfumo PUBLIC SDL3::SDL3)
+target_link_libraries(libfumo PRIVATE SDL3::SDL3)
 
 if(WIN32)
     add_custom_command(
