@@ -2,8 +2,8 @@
 // Created by fumosoftware on 6/13/2025.
 //
 
-#ifndef RENDERING_WINDOW_OPENGL_H
-#define RENDERING_WINDOW_OPENGL_H
+#ifndef FUMO_DETAILS_RENDERING_WINDOW_OPENGL_H
+#define FUMO_DETAILS_RENDERING_WINDOW_OPENGL_H
 
 #include <memory>
 
