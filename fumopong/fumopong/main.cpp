@@ -10,7 +10,7 @@
 int main(int argc, char** argv)
 {
   fumo::RenderingEngine re{};
-  fumo::RenderingWindow win{};
+  fumo::RenderingWindow win{&re};
 
   while(true) {
     if(auto const res = win.pollEvents(); res == false) {

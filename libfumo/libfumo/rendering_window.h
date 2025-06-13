@@ -10,9 +10,11 @@
 
 namespace fumo {
 
+class RenderingEngine;
+
 class RenderingWindow {
 public:
-  RenderingWindow() noexcept;
+  explicit RenderingWindow(RenderingEngine const* renderingEngine) noexcept;
   ~RenderingWindow() noexcept;
   RenderingWindow(const RenderingWindow &) = delete;
   RenderingWindow& operator=(const RenderingWindow &) = delete;
@@ -22,7 +24,7 @@ public:
   bool pollEvents() noexcept;
 private:
   alignas(std::max_align_t) std::array<std::byte, 32> m_windowBackend{};
-
+  RenderingEngine const* m_renderingEngine{nullptr};
 };
 
 } // fumo
