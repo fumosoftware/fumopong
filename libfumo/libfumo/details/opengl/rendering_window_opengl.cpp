@@ -26,6 +26,8 @@ namespace details {
     m_context.reset(SDL_GL_CreateContext(m_window.get()));
 
     SDL_assert(m_context != nullptr);
+    // gladLoadGLLoader will only succeed if we have a valid & currently bound opengl context
+    // so we load opengl here, instead of in RenderingEngineOpenGL
     SDL_assert(gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress)) != 0);
   }
 
