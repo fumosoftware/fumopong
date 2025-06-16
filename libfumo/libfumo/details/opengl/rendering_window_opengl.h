@@ -26,6 +26,7 @@ public:
   RenderingWindowOpenGL& operator=(RenderingWindowOpenGL&& rhs) noexcept;
 
   [[nodiscard]] bool pollEvents() const noexcept;
+  void present() const noexcept;
 private:
   SDLWindow m_window{nullptr, SDL_DestroyWindow};
   SDLGLContext m_context{nullptr, SDL_GL_DestroyContext};

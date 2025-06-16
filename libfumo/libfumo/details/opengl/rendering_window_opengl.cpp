@@ -4,7 +4,10 @@
 
 #include <libfumo/details/opengl/rendering_window_opengl.h>
 
+#include <libfumo/details/opengl/glad/glad.h>
+
 #include <utility>
+#include <iostream>
 
 namespace
 {
@@ -23,6 +26,7 @@ namespace details {
     m_context.reset(SDL_GL_CreateContext(m_window.get()));
 
     SDL_assert(m_context != nullptr);
+    SDL_assert(gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress)) != 0);
   }
 
   RenderingWindowOpenGL::RenderingWindowOpenGL(RenderingWindowOpenGL &&rhs) noexcept :
@@ -38,15 +42,21 @@ namespace details {
   }
   bool RenderingWindowOpenGL::pollEvents() const noexcept {
     SDL_Event events{};
-    while(SDL_PollEvent(&events)) {
-      switch(events.type) {
-        case SDL_EVENT_QUIT: return false;
+    while (SDL_PollEvent(&events)) {
+      switch (events.type) {
+      case SDL_EVENT_QUIT:
+        return false;
 
-        default: break;
+      default:
+        break;
       }
     }
 
     return true;
+  }
+  void RenderingWindowOpenGL::present() const noexcept {
+    SDL_assert(m_window.get() != nullptr);
+    SDL_GL_SwapWindow(m_window.get());
   }
 
 

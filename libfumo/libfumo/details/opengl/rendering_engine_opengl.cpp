@@ -3,6 +3,7 @@
 //
 
 #include <libfumo/details/opengl/rendering_engine_opengl.h>
+#include <SDL3/SDL.h>
 
 namespace fumo {
 namespace details {

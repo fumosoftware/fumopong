@@ -22,6 +22,7 @@ public:
   RenderingWindow& operator=(RenderingWindow &&) noexcept;
 
   bool pollEvents() noexcept;
+  void present() noexcept;
 private:
   alignas(std::max_align_t) std::array<std::byte, 32> m_windowBackend{};
   RenderingEngine const* m_renderingEngine{nullptr};

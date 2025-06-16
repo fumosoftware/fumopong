@@ -3,7 +3,11 @@ project(fumo)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_library(fumo SHARED libfumo/rendering_engine.h libfumo/rendering_engine.cpp
+add_library(fumo SHARED
+        libfumo/details/opengl/glad/glad.c
+        libfumo/details/opengl/glad/glad.h
+        libfumo/details/opengl/glad/khrplatform.h
+        libfumo/rendering_engine.h libfumo/rendering_engine.cpp
         libfumo/details/opengl/rendering_engine_opengl.cpp
         libfumo/details/opengl/rendering_engine_opengl.h
         libfumo/rendering_window.cpp

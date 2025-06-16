@@ -46,4 +46,11 @@ namespace fumo {
     auto const window = std::launder(reinterpret_cast<RenderingWindowType *>(m_windowBackend.data()));
     return window->pollEvents();
   }
+  void RenderingWindow::present() noexcept {
+    SDL_assert(m_renderingEngine != nullptr);
+
+    auto const window = std::launder(reinterpret_cast<RenderingWindowType *>(m_windowBackend.data()));
+    return window->present();
+
+  }
 } // fumo
