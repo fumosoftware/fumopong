@@ -4,8 +4,6 @@
 
 #include <libfumo/details/opengl/rendering_window_opengl.h>
 
-#include <libfumo/details/opengl/glad/glad.h>
-
 #include <utility>
 #include <iostream>
 
