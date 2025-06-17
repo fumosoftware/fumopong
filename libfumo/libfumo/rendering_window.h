@@ -14,7 +14,7 @@ class RenderingEngine;
 
 class RenderingWindow {
 public:
-  explicit RenderingWindow(RenderingEngine const* renderingEngine) noexcept;
+  explicit RenderingWindow(RenderingEngine* renderingEngine) noexcept;
   ~RenderingWindow() noexcept;
   RenderingWindow(const RenderingWindow &) = delete;
   RenderingWindow& operator=(const RenderingWindow &) = delete;
@@ -23,9 +23,10 @@ public:
 
   bool pollEvents() noexcept;
   void present() noexcept;
+  unsigned int windowId() noexcept;
 private:
   alignas(std::max_align_t) std::array<std::byte, 32> m_windowBackend{};
-  RenderingEngine const* m_renderingEngine{nullptr};
+  RenderingEngine* m_renderingEngine{nullptr};
 };
 
 } // fumo

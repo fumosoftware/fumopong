@@ -20,28 +20,19 @@ namespace details {
     SDL_assert(SDL_WasInit(SDL_SUBSYSTEMS) == SDL_SUBSYSTEMS);
 
     m_window.reset(SDL_CreateWindow("Fumo", 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE));
-
     SDL_assert(m_window != nullptr);
-
-    m_context.reset(SDL_GL_CreateContext(m_window.get()));
-
-    SDL_assert(m_context != nullptr);
-    // gladLoadGLLoader will only succeed if we have a valid & currently bound opengl context
-    // so we load opengl here, instead of in RenderingEngineOpenGL
-    SDL_assert(gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress)) != 0);
   }
 
   RenderingWindowOpenGL::RenderingWindowOpenGL(RenderingWindowOpenGL &&rhs) noexcept :
-    m_window(std::exchange(rhs.m_window, nullptr)),
-    m_context(std::exchange(rhs.m_context, nullptr))
+    m_window(std::exchange(rhs.m_window, nullptr))
   {}
 
   RenderingWindowOpenGL &RenderingWindowOpenGL::operator=(RenderingWindowOpenGL &&rhs) noexcept {
     m_window = std::exchange(rhs.m_window, nullptr);
-    m_context = std::exchange(rhs.m_context, nullptr);
 
     return *this;
   }
+
   bool RenderingWindowOpenGL::pollEvents() const noexcept {
     SDL_Event events{};
     while (SDL_PollEvent(&events)) {
@@ -56,9 +47,15 @@ namespace details {
 
     return true;
   }
+
   void RenderingWindowOpenGL::present() const noexcept {
     SDL_assert(m_window.get() != nullptr);
     SDL_GL_SwapWindow(m_window.get());
+  }
+
+  unsigned int RenderingWindowOpenGL::windowId() const noexcept {
+    SDL_assert(m_window.get() != nullptr);
+    return SDL_GetWindowID(m_window.get());
   }
 
 

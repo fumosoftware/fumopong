@@ -5,6 +5,7 @@
 #include <libfumo/rendering_engine.h>
 
 #include <libfumo/details/opengl/rendering_engine_opengl.h>
+#include <libfumo/rendering_window.h>
 
 #include <memory>
 #include <utility>
@@ -21,7 +22,7 @@ namespace fumo {
   using RenderingEngineType = details::RenderingEngineOpenGL;
 
   RenderingEngine::RenderingEngine() noexcept {
-    static_assert(sizeof(m_renderingBackend) == sizeof(RenderingEngineType),
+    static_assert(sizeof(m_renderingBackend) >= sizeof(RenderingEngineType),
                   "The size of RenderingEngine::Impl does not match the number of reserved bytes."
                   "Please update the number of reserved bytes.");
 
@@ -45,5 +46,17 @@ namespace fumo {
     return *this;
   }
 
+  void RenderingEngine::makeWindowCurrent(RenderingWindow *window) noexcept {
+    auto const engine = std::launder(reinterpret_cast<RenderingEngineType *>(m_renderingBackend.data()));
+
+    if(window != nullptr) {
+      auto const windowId = window->windowId();
+      auto const sdlWindow = SDL_GetWindowFromID(windowId);
+      engine->makeWindowCurrent(sdlWindow);
+    }
+    else {
+      engine->makeWindowCurrent(nullptr);
+    }
+  }
 
 } // fumo

@@ -13,16 +13,19 @@ namespace fumo {
 
   using RenderingWindowType = details::RenderingWindowOpenGL;
 
-  RenderingWindow::RenderingWindow(RenderingEngine const* renderingEngine) noexcept :
+  RenderingWindow::RenderingWindow(RenderingEngine* renderingEngine) noexcept :
     m_renderingEngine(renderingEngine)
   {
-    static_assert(sizeof(m_windowBackend) == sizeof(RenderingWindowType),
+    static_assert(sizeof(m_windowBackend) >= sizeof(RenderingWindowType),
                   "The size of RenderingEngine::Impl does not match the number of reserved bytes."
                   "Please update the number of reserved bytes.");
 
     SDL_assert(renderingEngine != nullptr);
 
     new(m_windowBackend.data()) RenderingWindowType();
+    if(renderingEngine) {
+      renderingEngine->makeWindowCurrent(this);
+    }
   }
 
   RenderingWindow::~RenderingWindow() noexcept {
@@ -46,11 +49,18 @@ namespace fumo {
     auto const window = std::launder(reinterpret_cast<RenderingWindowType *>(m_windowBackend.data()));
     return window->pollEvents();
   }
+
   void RenderingWindow::present() noexcept {
     SDL_assert(m_renderingEngine != nullptr);
 
+    m_renderingEngine->makeWindowCurrent(this);
+
     auto const window = std::launder(reinterpret_cast<RenderingWindowType *>(m_windowBackend.data()));
     return window->present();
+  }
 
+  unsigned int RenderingWindow::windowId() noexcept {
+    auto const window = std::launder(reinterpret_cast<RenderingWindowType *>(m_windowBackend.data()));
+    return window->windowId();
   }
 } // fumo

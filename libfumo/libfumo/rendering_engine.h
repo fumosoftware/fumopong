@@ -10,6 +10,7 @@
 
 namespace fumo {
 
+class RenderingWindow;
 class RenderingEngine {
 public:
   RenderingEngine() noexcept;
@@ -19,8 +20,9 @@ public:
   RenderingEngine(RenderingEngine&&) noexcept;
   RenderingEngine& operator=(RenderingEngine&&) noexcept;
 
+  void makeWindowCurrent(RenderingWindow* window) noexcept;
 private:
-  alignas(std::max_align_t) std::array<std::byte, 1> m_renderingBackend{};
+  alignas(std::max_align_t) std::array<std::byte, 32> m_renderingBackend{};
 
 };
 
